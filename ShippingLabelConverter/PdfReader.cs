@@ -1,21 +1,14 @@
 using Ghostscript.NET.Processor;
-using Tesseract;
+using IronOcr;
 
 namespace ShippingLabelConverter;
 using ImageMagick;
 
 public class PdfReader
 {
-    public void handlePdf(string pdfFilePath, string outputFilePath)
-    {
-        ConvertPdfToImage(pdfFilePath, outputFilePath);
-        ExtractText(outputFilePath);
-        
-    }
-    
     
     // convert pdf to png
-    private static void ConvertPdfToImage(string pdfFilePath, string outputFilePath)
+    public void ConvertPdfToImage(string pdfFilePath, string outputFilePath)
     {
         
         var images = new MagickImageCollection();
@@ -43,15 +36,5 @@ public class PdfReader
             }
             
         }
-    }
-    
-    // extract text from png with OCR (tesseract)
-    private static void ExtractText(string outputFilePath)
-    {
-        var engine = new TesseractEngine(@"./tessdata", "deu", EngineMode.Default);
-        using var img = Pix.LoadFromFile(outputFilePath);
-        using var page = engine.Process(img);
-        string text = page.GetText();
-        Console.WriteLine(text);
     }
 }

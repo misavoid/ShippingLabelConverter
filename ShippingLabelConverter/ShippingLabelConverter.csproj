@@ -9,7 +9,11 @@
 
     <ItemGroup>
       <PackageReference Include="Ghostscript.NET" Version="1.2.3" />
+      <PackageReference Include="IronOcr.MacOs" Version="2023.3.2" />
+      <PackageReference Include="IronOcr.MacOs.ARM" Version="2023.3.2" />
+      <PackageReference Include="leptonicaSharp" Version="1.77.0.1" />
       <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="12.3.0" />
+      <PackageReference Include="ocr" Version="4.4.4.11" />
       <PackageReference Include="Tesseract" Version="5.2.0" />
     </ItemGroup>
 

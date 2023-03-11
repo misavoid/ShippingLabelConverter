@@ -10,4 +10,7 @@ using ShippingLabelConverter;
 string test = "/Users/pingopengo/Datasets/dhl_label.pdf";
 
 PdfReader pdfReader = new PdfReader();
-pdfReader.handlePdf(test, "/Users/pingopengo/Datasets/dhl_label.png");
+pdfReader.ConvertPdfToImage(test, "/Users/pingopengo/Datasets/neu_dhl_label.png");
+
+string img = "/Users/pingopengo/Datasets/neu_dhl_label.png";
+TextExtractor.ExtractText(img);
