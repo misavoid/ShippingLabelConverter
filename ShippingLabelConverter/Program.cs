@@ -7,10 +7,15 @@ using ShippingLabelConverter;
 
 
 
-string test = "/Users/pingopengo/Datasets/dhl_label.pdf";
+string test = "/Users/misanthrop/Documents/Code/data/DHL-Paketmarke.pdf";
+
 
 PdfReader pdfReader = new PdfReader();
-pdfReader.ConvertPdfToImage(test, "/Users/pingopengo/Datasets/neu_dhl_label.png");
+pdfReader.ConvertPdfToImage(test, "/Users/misanthrop/Documents/Code/data/DHL-Paketmarke_neu.png");
 
-string img = "/Users/pingopengo/Datasets/neu_dhl_label.png";
-TextExtractor.ExtractText(img);
+string img = "/Users/misanthrop/Documents/Code/data/DHL-Paketmarke_neu.png";
+string extractedText = TextExtractor.ExtractText(img);
+
+Console.WriteLine("extracted text:");
+Console.WriteLine(extractedText);
+
