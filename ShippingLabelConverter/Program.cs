@@ -23,10 +23,12 @@ string extractedText = TextExtractor.ExtractText(img);
 Console.WriteLine("extracted text:");
 Console.WriteLine(extractedText);
 
-var barcodeExtractor = new BarcodeExtractor();
-barcodeExtractor.ExtractBarcodes(img);
+var barcodes = TextExtractor.ExtractBarcodes(img);
+Console.WriteLine("barcodes:" + barcodes);
+//var barcodeExtractor = new BarcodeExtractor();
+//barcodeExtractor.ExtractBarcodes(img);
 
-Console.WriteLine("barcode extraction complete");
+//Console.WriteLine("barcode extraction complete");
 
 
 

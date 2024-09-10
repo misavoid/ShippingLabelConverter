@@ -5,10 +5,11 @@ using SkiaSharp;
 
 public class BarcodeExtractor
 {
-    public List<string> ExtractBarcodes(string imagePath)
+    public List<LuminanceSource> ExtractBarcodes(string imagePath)
     {
-        var barcodes = new List<string>();
-
+        // var barcodes = new List<string>();
+        var croppedLuminanceSources = new List<LuminanceSource>();
+        
         // Initialize the BarcodeReaderGeneric to support multi-barcode detection
         var barcodeReader = new BarcodeReaderGeneric
         {
@@ -22,8 +23,11 @@ public class BarcodeExtractor
                     BarcodeFormat.CODE_128, // Support for CODE_128
                     BarcodeFormat.CODE_39,  // Support for CODE_39
                     BarcodeFormat.EAN_13,   // Support for EAN-13
-                    BarcodeFormat.ITF       // Support for ITF
-                }
+                    BarcodeFormat.ITF,       // Support for ITF
+                    BarcodeFormat.ITF-14    // just to be sure
+                },
+                PureBarcode = false,
+                AssumeCode39CheckDigit = true
             }
         };
 
@@ -43,9 +47,27 @@ public class BarcodeExtractor
             {
                 foreach (var result in results)
                 {
-                    // Store all detected barcodes in the list
-                    barcodes.Add(result.Text);
                     Console.WriteLine($"Detected Barcode: {result.Text}");
+                    
+                    // log bounding box points for each barcode
+                    foreach (var point in result.ResultPoints)
+                    {
+                        Console.WriteLine($"Point: X = {point.X}, Y = {point.Y}");
+                    }
+                    
+                    // Crop the barcode region from the luminance source
+                    int left = result.ResultPoints.Min(p => (int)p.X);
+                    int right = result.ResultPoints.Max(p => (int)p.X);
+                    int top = result.ResultPoints.Min(p => (int)p.Y);
+                    int bottom = result.ResultPoints.Max(p => (int)p.Y);
+
+                    Console.WriteLine($"Bounding box: Left = {left}, Right = {right}, Top = {top}, Bottom = {bottom}");
+                    
+                    // Crop the area of the barcode
+                    LuminanceSource croppedSource = luminanceSource.crop(left, top, right - left, bottom - top);
+
+                    // Store the cropped luminance source for further use
+                    croppedLuminanceSources.Add(croppedSource);
                 }
             }
             else
@@ -54,7 +76,7 @@ public class BarcodeExtractor
             }
         }
 
-        return barcodes;
+        return croppedLuminanceSources;
     }
     
     // Helper method to save luminanceSource as an image

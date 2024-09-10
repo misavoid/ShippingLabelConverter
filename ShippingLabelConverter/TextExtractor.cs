@@ -1,9 +1,7 @@
 using System.Diagnostics;
-using System.Drawing;
+using System.Text.RegularExpressions;
 using ImageMagick;
-using System.IO;
-using ZXing;
-using ZXing.Common;
+
 
 
 namespace ShippingLabelConverter
@@ -49,6 +47,8 @@ namespace ShippingLabelConverter
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
+            
+            
 
             // Run Tesseract and capture errors
             using (Process process = new Process())
@@ -72,6 +72,28 @@ namespace ShippingLabelConverter
             File.Delete(outputTextFile);
 
             return extractedText;
+        }
+        
+        // New Method to Extract Barcodes from the Text Output
+        public static string ExtractBarcodes(string imagePath)
+        {
+            // Run Tesseract to extract text, reuse the existing method
+            string extractedText = ExtractText(imagePath);
+            
+            // Define a pattern to capture barcodes (usually numeric or alphanumeric patterns)
+            string barcodePattern = @"\b\d{10,20}\b";  // Matches sequences of 10 to 20 digits, adjust as needed
+
+            // Use Regex to find potential barcodes in the extracted text
+            var matches = Regex.Matches(extractedText, barcodePattern);
+
+            if (matches.Count > 0)
+            {
+                // Collect and return all barcodes found in the image
+                string barcodes = string.Join("\n", matches);
+                return barcodes;
+            }
+
+            return "No barcodes detected.";
         }
     }
 }
