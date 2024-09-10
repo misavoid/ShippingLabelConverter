@@ -40,25 +40,6 @@ namespace ShippingLabelConverter
             }
             
             
-            var barcodeReader = new BarcodeReader();  
-
-            using (var barcodeImage = new Bitmap(imagePath))  // Load the image into a Bitmap
-            {
-                // Convert Bitmap to a LuminanceSource (required by ZXing)
-                var luminanceSource = new ZXing.BitmapLuminanceSource(barcodeImage);
-                var binarizer = new HybridBinarizer(luminanceSource);
-                var binaryBitmap = new BinaryBitmap(binarizer);
-
-                // Decode the barcode from the binary bitmap
-                var result = barcodeReader.Decode(binaryBitmap);
-
-                if (result != null)
-                {
-                    finalText += $"Detected Barcode: {result.Text}\n";  // Append detected barcode
-                }
-            }
-            
-            
             // Set up the process to run Tesseract
             ProcessStartInfo psi = new ProcessStartInfo
             {
